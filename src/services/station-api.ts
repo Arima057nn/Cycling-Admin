@@ -1,3 +1,7 @@
 import { axiosClient } from "./axios-cilent";
 
-export const stationApi = {};
+export const stationApi = {
+  getAllStation() {
+    return axiosClient.get("/station");
+  },
+};

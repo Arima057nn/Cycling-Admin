@@ -1,3 +1,7 @@
 import { axiosClient } from "./axios-cilent";
 
-export const cyclingApi = {};
+export const cyclingApi = {
+  getAllCycling() {
+    return axiosClient.get("/cycling");
+  },
+};
