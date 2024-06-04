@@ -12,4 +12,5 @@ export interface UserLoggedInterface {
   balance: number;
   gender: number;
   email: string;
+  role: number;
 }

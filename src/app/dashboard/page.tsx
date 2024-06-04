@@ -16,9 +16,5 @@ export default function Dashboard() {
   useEffect(() => {
     getBookings();
   }, []);
-  return (
-    <div>
-      <div className="flex justify-between items-center"></div>
-    </div>
-  );
+  return <div></div>;
 }
