@@ -8,10 +8,10 @@ export default function Ticket() {
   const [tickets, setTickets] = useState<TicketInterface[]>([]);
   const getTickets = async () => {
     const response = await ticketApi.getAllTicket();
-    if (response.status === 200) {
+    if (response?.status === 200) {
       console.log(response.data);
       setTickets(response.data);
-    } else console.log("error", response.data.error);
+    }
   };
   useEffect(() => {
     getTickets();

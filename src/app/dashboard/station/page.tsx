@@ -8,10 +8,10 @@ export default function Cycling() {
   const [stations, setStations] = useState<StationInterface[]>([]);
   const getStations = async () => {
     const response = await stationApi.getAllStation();
-    if (response.status === 200) {
+    if (response?.status === 200) {
       console.log(response.data);
       setStations(response.data);
-    } else console.log("error", response.data.error);
+    }
   };
   useEffect(() => {
     getStations();
