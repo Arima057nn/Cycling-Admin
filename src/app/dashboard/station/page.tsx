@@ -20,6 +20,8 @@ import SearchIcon from "@mui/icons-material/Search";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import SettingsIcon from "@mui/icons-material/Settings";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
+import { useRouter } from "next/navigation";
 
 export default function Station() {
   const [stations, setStations] = useState<StationInterface[]>([]);
@@ -30,7 +32,7 @@ export default function Station() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [searchAddress, setSearchAddress] = useState("");
-
+  const router = useRouter();
   const getStations = async () => {
     const response = await stationApi.getAllStation();
     if (response?.status === 200) {
@@ -81,7 +83,15 @@ export default function Station() {
   return (
     <div>
       <div className="p-4">
-        <Card sx={{ p: 2 }}>
+        <Card
+          sx={{
+            p: 2,
+            color: "#1A1A1A",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
           <OutlinedInput
             defaultValue=""
             fullWidth
@@ -94,6 +104,15 @@ export default function Station() {
             sx={{ maxWidth: "500px" }}
             onChange={handleSearchInputChange}
           />
+          <Button
+            variant="contained"
+            startIcon={<AddIcon />}
+            onClick={() => {
+              router.push("/dashboard/station/create");
+            }}
+          >
+            Thêm trạm
+          </Button>
         </Card>
         <Card>
           <Box>

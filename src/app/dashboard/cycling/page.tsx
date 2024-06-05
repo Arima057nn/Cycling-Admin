@@ -22,6 +22,8 @@ import { convertCyclingStatus } from "@/utils/CyclingStatus";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import SettingsIcon from "@mui/icons-material/Settings";
 import DeleteIcon from "@mui/icons-material/Delete";
+import AddIcon from "@mui/icons-material/Add";
+import { useRouter } from "next/navigation";
 
 export default function Station() {
   const [cyclings, setCyclings] = useState<CyclingInterface[]>([]);
@@ -32,7 +34,7 @@ export default function Station() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [searchKeyword, setSearchKeyword] = useState("");
-
+  const router = useRouter();
   const getCyclings = async () => {
     const response = await cyclingApi.getAllCycling();
     if (response?.status === 200) {
@@ -78,7 +80,15 @@ export default function Station() {
 
   return (
     <div className="p-4">
-      <Card sx={{ p: 2, color: "#1A1A1A" }}>
+      <Card
+        sx={{
+          p: 2,
+          color: "#1A1A1A",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         <OutlinedInput
           defaultValue=""
           fullWidth
@@ -91,6 +101,15 @@ export default function Station() {
           sx={{ maxWidth: "500px" }}
           onChange={handleSearchInputChange}
         />
+        <Button
+          variant="contained"
+          startIcon={<AddIcon />}
+          onClick={() => {
+            router.push("/dashboard/cycling/create");
+          }}
+        >
+          Thêm xe{" "}
+        </Button>
       </Card>
       <Card>
         <Box>
