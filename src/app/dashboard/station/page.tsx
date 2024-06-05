@@ -17,11 +17,11 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
-import MyLocationIcon from "@mui/icons-material/MyLocation";
 import SettingsIcon from "@mui/icons-material/Settings";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/navigation";
+import PlaceIcon from "@mui/icons-material/Place";
 
 export default function Station() {
   const [stations, setStations] = useState<StationInterface[]>([]);
@@ -36,7 +36,6 @@ export default function Station() {
   const getStations = async () => {
     const response = await stationApi.getAllStation();
     if (response?.status === 200) {
-      console.log(response.data);
       setStations(response.data);
       setFilteredStations(response.data);
     }
@@ -80,6 +79,9 @@ export default function Station() {
     setSearchAddress(event.target.value);
   };
 
+  const handleCheckPosition = () => {
+    router.push(`/dashboard/station/map/`);
+  };
   return (
     <div>
       <div className="p-4">
@@ -104,15 +106,26 @@ export default function Station() {
             sx={{ maxWidth: "500px" }}
             onChange={handleSearchInputChange}
           />
-          <Button
-            variant="contained"
-            startIcon={<AddIcon />}
-            onClick={() => {
-              router.push("/dashboard/station/create");
-            }}
-          >
-            Thêm trạm
-          </Button>
+          <div>
+            <Button
+              variant="contained"
+              color="success"
+              endIcon={<PlaceIcon />}
+              sx={{ marginRight: 2 }}
+              onClick={() => handleCheckPosition()}
+            >
+              Map
+            </Button>
+            <Button
+              variant="contained"
+              startIcon={<AddIcon />}
+              onClick={() => {
+                router.push("/dashboard/station/create");
+              }}
+            >
+              Thêm trạm
+            </Button>
+          </div>
         </Card>
         <Card>
           <Box>
@@ -155,9 +168,6 @@ export default function Station() {
                       {row.latitude}, {row.longitude}
                     </TableCell>
                     <TableCell>
-                      <IconButton color="primary">
-                        <MyLocationIcon />
-                      </IconButton>
                       <IconButton color="primary">
                         <SettingsIcon />
                       </IconButton>

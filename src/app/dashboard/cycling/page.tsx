@@ -24,6 +24,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 export default function Station() {
   const [cyclings, setCyclings] = useState<CyclingInterface[]>([]);
@@ -76,6 +77,15 @@ export default function Station() {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setSearchKeyword(event.target.value);
+  };
+  const handleOpenModal = (cycling: CyclingInterface) => {
+    console.log("coord", cycling.latitude, cycling.longitude);
+    if (cycling.latitude === undefined || cycling.longitude === undefined) {
+      toast.error("Xe chưa được cài đặt vị trí");
+      return;
+    }
+    let url = `https://www.google.com/maps/search/?api=1&query=${cycling.latitude},${cycling.longitude}`;
+    window.open(url, "_blank");
   };
 
   return (
@@ -151,7 +161,10 @@ export default function Station() {
                     <TableCell>{row.category.name}</TableCell>
                     <TableCell>{convertCyclingStatus(row.status)}</TableCell>
                     <TableCell>
-                      <IconButton color="primary">
+                      <IconButton
+                        onClick={() => handleOpenModal(row)}
+                        color="primary"
+                      >
                         <MyLocationIcon />
                       </IconButton>
                       <IconButton color="primary">

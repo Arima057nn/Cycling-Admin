@@ -19,4 +19,7 @@ export const stationApi = {
       longitude,
     });
   },
+  getCyclingsAtStation(stationId: string | undefined) {
+    return axiosClient.get(`/station/info?stationId=${stationId}`);
+  },
 };
