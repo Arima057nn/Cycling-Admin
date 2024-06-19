@@ -12,6 +12,7 @@ export interface CyclingInterface {
   latitude: number;
   longitude: number;
   coordinate: CoordinateInterface[];
+  qrcode: string;
   __v: number;
 }
 

@@ -24,4 +24,10 @@ export const stationApi = {
   getCyclingsAtStation(stationId: string | undefined) {
     return axiosClient.get(`/station/info?stationId=${stationId}`);
   },
+  getCyclingsReady() {
+    return axiosClient.get("/station/cyclingReady");
+  },
+  createCyclingToStation(stationId: string, cyclings: { cyclingId: string }[]) {
+    return axiosClient.post("/station/createCyclings", { stationId, cyclings });
+  },
 };

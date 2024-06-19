@@ -5,8 +5,10 @@ import {
   Box,
   Button,
   Card,
+  Checkbox,
   IconButton,
   InputAdornment,
+  Modal,
   OutlinedInput,
   Table,
   TableBody,
@@ -22,6 +24,21 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/navigation";
 import PlaceIcon from "@mui/icons-material/Place";
+import { CyclingInterface } from "@/interfaces/cycling";
+import { convertCyclingStatus } from "@/utils/CyclingStatus";
+import { toast } from "react-toastify";
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  height: 600,
+  bgcolor: "background.paper",
+  borderRadius: 2,
+  overflow: "auto",
+  p: 4,
+};
 
 export default function Station() {
   const [stations, setStations] = useState<StationInterface[]>([]);
@@ -32,6 +49,14 @@ export default function Station() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [searchAddress, setSearchAddress] = useState("");
+  const [open, setOpen] = useState(false);
+  const [stationChecked, setStationChecked] = useState<StationInterface | null>(
+    null
+  );
+  const [selectedCyclings, setSelectedCyclings] = useState<
+    { cyclingId: string }[]
+  >([]);
+  const [cyclings, setCyclings] = useState<CyclingInterface[]>([]);
   const router = useRouter();
   const getStations = async () => {
     const response = await stationApi.getAllStation();
@@ -81,6 +106,55 @@ export default function Station() {
 
   const handleCheckPosition = () => {
     router.push(`/dashboard/station/map/`);
+  };
+
+  const handleShowInfoStation = (station: StationInterface) => {
+    setStationChecked(station);
+    setOpen(true);
+    console.log(station);
+  };
+
+  const handleCloseModal = () => {
+    setOpen(false);
+    setStationChecked(null);
+  };
+
+  const getCyclingsReady = async () => {
+    const res = await stationApi.getCyclingsReady();
+    if (res.status === 200) {
+      setCyclings(res.data.cyclingsNotAtStation);
+    }
+  };
+
+  const createCyclingToStation = async () => {
+    if (!stationChecked?._id) {
+      toast.error("Chưa chọn trạm");
+      return;
+    }
+    const res = await stationApi.createCyclingToStation(
+      stationChecked?._id,
+      selectedCyclings
+    );
+    if (res.status === 200) {
+      getCyclingsReady();
+      toast.success("Thêm xe thành công");
+    } else toast.error("Thêm xe thất bại");
+  };
+
+  useEffect(() => {
+    getCyclingsReady();
+  }, []);
+
+  const handleCheckboxChange = (id: string) => {
+    setSelectedCyclings((prevSelectedCyclings) => {
+      if (prevSelectedCyclings.some((cycling) => cycling.cyclingId === id)) {
+        return prevSelectedCyclings.filter(
+          (cycling) => cycling.cyclingId !== id
+        );
+      } else {
+        return [...prevSelectedCyclings, { cyclingId: id }];
+      }
+    });
   };
   return (
     <div>
@@ -174,6 +248,12 @@ export default function Station() {
                       <IconButton color="error">
                         <DeleteIcon />
                       </IconButton>
+                      <IconButton
+                        color="success"
+                        onClick={() => handleShowInfoStation(row)}
+                      >
+                        <AddIcon />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -210,6 +290,68 @@ export default function Station() {
                 Next
               </Button>
             </Box>
+            <Modal
+              open={open}
+              onClose={handleCloseModal}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <div className="w-full h-full bg-white text-gray-700">
+                  <div className="w-full flex justify-center items-center flex-col pb-4">
+                    <div className="text-2xl font-semibold">
+                      {stationChecked?.name}
+                    </div>
+                    <div className="text-sm font-medium text-blue-600 flex items-center gap-1">
+                      <PlaceIcon /> {stationChecked?.position}
+                    </div>
+                  </div>
+                  {cyclings.map((row) => (
+                    <TableRow hover key={row._id}>
+                      <TableCell
+                        sx={{
+                          display: "flex",
+                          flexDirection: "row",
+                          alignItems: "center",
+                          gap: 2,
+                        }}
+                      >
+                        <Box
+                          component="img"
+                          alt="Widgets"
+                          src="/assets/cycling.png"
+                          sx={{
+                            height: 64,
+                            width: 64,
+                            borderRadius: 2,
+                          }}
+                        />
+                        <Typography variant="subtitle2">{row.name}</Typography>
+                      </TableCell>
+                      <TableCell>{row.code}</TableCell>
+                      <TableCell>{convertCyclingStatus(row.status)}</TableCell>
+                      <TableCell>
+                        <Checkbox
+                          checked={selectedCyclings.some(
+                            (cycling) => cycling.cyclingId === row._id
+                          )}
+                          onChange={() => handleCheckboxChange(row._id)}
+                        />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+
+                  <div className="absolute bottom-6 right-8">
+                    <Button
+                      variant="contained"
+                      onClick={createCyclingToStation}
+                    >
+                      Thêm xe
+                    </Button>
+                  </div>
+                </div>
+              </Box>
+            </Modal>
           </Box>
         </Card>
       </div>
