@@ -10,6 +10,7 @@ import Link from "next/link";
 import { useContext } from "react";
 import { UserContext } from "@/contexts/authContext";
 import { toast } from "react-toastify";
+import { Box } from "@mui/material";
 
 const Sidebar = () => {
   const { dispatch } = useContext(UserContext);
@@ -20,7 +21,20 @@ const Sidebar = () => {
   };
   return (
     <div className="flex flex-col justify-start h-full">
-      <div className="border-b-[1px] border-white py-10 h-10"></div>
+      <div className="border-b-[1px] border-white p-4 flex-row w-full flex items-center gap-2">
+        <Box
+          component="img"
+          alt="Widgets"
+          src="/assets/logo.png"
+          sx={{
+            height: "50px",
+            width: "50px",
+            maxWidth: "50px",
+            borderRadius: 2,
+          }}
+        />
+        <div className="font-merienda font-bold text-3xl">BKCycling</div>
+      </div>
       <div className="flex flex-col justify-between h-full">
         <div className="flex flex-col p-4 gap-4">
           <div className="flex flex-col text-white">
