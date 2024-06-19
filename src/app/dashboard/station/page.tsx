@@ -156,7 +156,7 @@ export default function Station() {
                         src={row.imgae}
                         sx={{
                           height: 64,
-
+                          width: 84,
                           borderRadius: 2,
                         }}
                       />

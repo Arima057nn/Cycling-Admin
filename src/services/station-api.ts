@@ -9,7 +9,8 @@ export const stationApi = {
     code: string,
     position: string,
     latitude: string,
-    longitude: string
+    longitude: string,
+    image: string
   ) {
     return axiosClient.post("/station/create", {
       name,
@@ -17,6 +18,7 @@ export const stationApi = {
       position,
       latitude,
       longitude,
+      image,
     });
   },
   getCyclingsAtStation(stationId: string | undefined) {
