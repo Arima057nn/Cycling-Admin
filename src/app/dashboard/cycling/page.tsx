@@ -15,6 +15,7 @@ import {
   Typography,
   Button,
   IconButton,
+  Modal,
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
@@ -22,10 +23,22 @@ import { convertCyclingStatus } from "@/utils/CyclingStatus";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import SettingsIcon from "@mui/icons-material/Settings";
 import DeleteIcon from "@mui/icons-material/Delete";
+import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  height: 600,
+  bgcolor: "background.paper",
+  borderRadius: 2,
+  overflow: "auto",
+  p: 4,
+};
 export default function Station() {
   const [cyclings, setCyclings] = useState<CyclingInterface[]>([]);
   const [filteredCyclings, setFilteredCyclings] = useState<CyclingInterface[]>(
@@ -35,6 +48,10 @@ export default function Station() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [searchKeyword, setSearchKeyword] = useState("");
+  const [cyclingChecked, setCyclingChecked] = useState<CyclingInterface | null>(
+    null
+  );
+  const [open, setOpen] = useState(false);
   const router = useRouter();
   const getCyclings = async () => {
     const response = await cyclingApi.getAllCycling();
@@ -88,6 +105,16 @@ export default function Station() {
     window.open(url, "_blank");
   };
 
+  const handleShowInfoStation = (cycling: CyclingInterface) => {
+    setCyclingChecked(cycling);
+    setOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpen(false);
+    setCyclingChecked(null);
+  };
+
   return (
     <div className="p-4">
       <Card
@@ -130,6 +157,7 @@ export default function Station() {
                 <TableCell>Mã xe</TableCell>
                 <TableCell>Loại</TableCell>
                 <TableCell>Trạng thái</TableCell>
+                <TableCell>QR CODE</TableCell>
                 <TableCell>Hành động</TableCell>
               </TableRow>
             </TableHead>
@@ -160,6 +188,14 @@ export default function Station() {
                     <TableCell>{row.code}</TableCell>
                     <TableCell>{row.category.name}</TableCell>
                     <TableCell>{convertCyclingStatus(row.status)}</TableCell>
+                    <TableCell>
+                      <IconButton
+                        color="primary"
+                        onClick={() => handleShowInfoStation(row)}
+                      >
+                        <QrCodeScannerIcon />
+                      </IconButton>
+                    </TableCell>
                     <TableCell>
                       <IconButton
                         onClick={() => handleOpenModal(row)}
@@ -209,6 +245,27 @@ export default function Station() {
               Next
             </Button>
           </Box>
+          <Modal
+            open={open}
+            onClose={handleCloseModal}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <div className="w-full h-full bg-white text-gray-700">
+                <Box
+                  component="img"
+                  alt="Widgets"
+                  src={cyclingChecked?.qrcode}
+                  sx={{
+                    height: "auto",
+                    width: 400,
+                    borderRadius: 2,
+                  }}
+                />
+              </div>
+            </Box>
+          </Modal>
         </Box>
       </Card>
     </div>
