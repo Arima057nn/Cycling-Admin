@@ -3,6 +3,7 @@
 import LocalGasStationIcon from "@mui/icons-material/LocalGasStation";
 import ConfirmationNumberIcon from "@mui/icons-material/ConfirmationNumber";
 import DirectionsBikeIcon from "@mui/icons-material/DirectionsBike";
+import ReportIcon from "@mui/icons-material/Report";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import BarChartIcon from "@mui/icons-material/BarChart";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -74,6 +75,14 @@ const Sidebar = () => {
               <div className="p-2 bg-indigo-500 flex rounded-lg flex-row items-center">
                 <ConfirmationNumberIcon />
                 <span className="ml-2 font-normal text-sm">Ticket</span>
+              </div>
+            </Link>
+          </div>
+          <div className="flex flex-col text-white">
+            <Link href="/dashboard/report">
+              <div className="p-2 bg-indigo-500 flex rounded-lg flex-row items-center">
+                <ReportIcon />
+                <span className="ml-2 font-normal text-sm">Report</span>
               </div>
             </Link>
           </div>
