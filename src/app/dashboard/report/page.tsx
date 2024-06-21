@@ -13,10 +13,28 @@ import {
   TableHead,
   TableRow,
   Typography,
+  Select,
+  MenuItem,
+  IconButton,
+  Modal,
 } from "@mui/material";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import SearchIcon from "@mui/icons-material/Search";
 import { ReportInterface } from "@/interfaces/report";
 import { reportApi } from "@/services/report-api";
+import { REPORT_STATUS } from "@/constants/report";
+
+const style = {
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  height: 600,
+  bgcolor: "background.paper",
+  borderRadius: 2,
+  overflow: "auto",
+  p: 4,
+};
 
 export default function Report() {
   const [reports, setReports] = useState<ReportInterface[]>([]);
@@ -25,11 +43,13 @@ export default function Report() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [searchName, setSearchName] = useState("");
-
+  const [open, setOpen] = useState(false);
+  const [reportChecked, setReportChecked] = useState<ReportInterface | null>(
+    null
+  );
   const getReports = async () => {
     const response = await reportApi.getReports();
     if (response?.status === 200) {
-      console.log(response.data);
       setReports(response.data);
       setFilteredReports(response.data);
     }
@@ -73,6 +93,29 @@ export default function Report() {
     setSearchName(event.target.value);
   };
 
+  const handleStatusChange = async (reportId: string, newStatus: number) => {
+    try {
+      const res = await reportApi.changeStatus(reportId, newStatus);
+      setReports((prevReports) =>
+        prevReports.map((report) =>
+          report._id === reportId ? { ...report, status: newStatus } : report
+        )
+      );
+    } catch (error) {
+      console.error("Failed to update status", error);
+    }
+  };
+
+  const handleShowInfoReport = (report: ReportInterface) => {
+    setReportChecked(report);
+    setOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpen(false);
+    setReportChecked(null);
+  };
+
   return (
     <div className="p-4">
       <Card sx={{ p: 2 }}>
@@ -95,9 +138,9 @@ export default function Report() {
             <TableHead>
               <TableRow>
                 <TableCell>Sự cố</TableCell>
-                <TableCell>Chi tiết</TableCell>
                 <TableCell>Người dùng</TableCell>
                 <TableCell>Xe đạp</TableCell>
+                <TableCell>Chi tiết</TableCell>
                 <TableCell>Trạng thái</TableCell>
               </TableRow>
             </TableHead>
@@ -107,10 +150,35 @@ export default function Report() {
                   <TableCell>
                     <Typography variant="subtitle2">{row.title}</Typography>
                   </TableCell>
-                  <TableCell>{row.description}</TableCell>
-                  <TableCell>{row.userId}</TableCell>
-                  <TableCell>{row.cyclingId.name}</TableCell>
-                  <TableCell>{row.status}</TableCell>
+                  <TableCell>{row.userId._id}</TableCell>
+                  <TableCell>{row?.cyclingId?.name}</TableCell>
+                  <TableCell>
+                    <IconButton
+                      onClick={() => {
+                        handleShowInfoReport(row);
+                      }}
+                      color="primary"
+                    >
+                      <VisibilityIcon />
+                    </IconButton>
+                  </TableCell>
+                  <TableCell>
+                    <Select
+                      value={row.status}
+                      onChange={(event) =>
+                        handleStatusChange(
+                          row._id,
+                          event.target.value as number
+                        )
+                      }
+                    >
+                      {REPORT_STATUS.map((status) => (
+                        <MenuItem key={status.value} value={status.value}>
+                          {status.title}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -146,6 +214,55 @@ export default function Report() {
               Next
             </Button>
           </Box>
+          <Modal
+            open={open}
+            onClose={handleCloseModal}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+          >
+            <Box sx={style}>
+              <div className="w-96 h-full bg-white text-gray-700">
+                {reportChecked && (
+                  <Box>
+                    <Typography variant="h6" component="h2" gutterBottom>
+                      {reportChecked.title}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      gutterBottom
+                      sx={{
+                        whiteSpace: "pre-wrap",
+                        wordBreak: "break-word",
+                      }}
+                    >
+                      <strong>Mô tả:</strong> {reportChecked.description}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      <strong>Mã người dùng:</strong> {reportChecked.userId._id}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      <strong>Người dùng:</strong> {reportChecked.userId.name}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      <strong>Xe đạp:</strong> {reportChecked.cyclingId?.name}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      <strong>Trạng thái:</strong>{" "}
+                      {
+                        REPORT_STATUS.find(
+                          (status) => status.value === reportChecked.status
+                        )?.title
+                      }
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                      <strong>Ngày tạo:</strong>{" "}
+                      {new Date(reportChecked.createdAt).toLocaleString()}
+                    </Typography>
+                  </Box>
+                )}
+              </div>
+            </Box>
+          </Modal>
         </Box>
       </Card>
     </div>
