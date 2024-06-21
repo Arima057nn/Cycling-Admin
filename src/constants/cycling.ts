@@ -3,4 +3,5 @@ export const CYCLING_STATUS = {
   ACTIVE: 1,
   KEEPING: 2,
   MAINTENANCE: 3,
+  DISABLED: 4,
 };

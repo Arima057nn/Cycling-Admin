@@ -21,12 +21,15 @@ import { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { convertCyclingStatus } from "@/utils/CyclingStatus";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
+import BlockIcon from "@mui/icons-material/Block";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import SettingsIcon from "@mui/icons-material/Settings";
-import DeleteIcon from "@mui/icons-material/Delete";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
+import { CYCLING_STATUS } from "@/constants/cycling";
+import { reportApi } from "@/services/report-api";
 
 const style = {
   position: "absolute" as "absolute",
@@ -113,6 +116,28 @@ export default function Station() {
   const handleCloseModal = () => {
     setOpen(false);
     setCyclingChecked(null);
+  };
+
+  const disabledCycling = async (cycling: CyclingInterface) => {
+    setCyclingChecked(cycling);
+    const res = await cyclingApi.disableCycling(cycling._id);
+    if (res.status === 200) {
+      toast.success(res.data.message);
+      getCyclings();
+    } else {
+      toast.error(res.data.error);
+    }
+  };
+
+  const enableCycling = async (cycling: CyclingInterface) => {
+    setCyclingChecked(cycling);
+    const res = await reportApi.finishMaintenance(cycling._id);
+    if (res.status === 200) {
+      toast.success("Kích hoạt xe thành công");
+      getCyclings();
+    } else {
+      toast.error(res.data.error);
+    }
   };
 
   return (
@@ -206,9 +231,22 @@ export default function Station() {
                       <IconButton color="primary">
                         <SettingsIcon />
                       </IconButton>
-                      <IconButton color="error">
-                        <DeleteIcon />
-                      </IconButton>
+                      {row.status === CYCLING_STATUS.READY && (
+                        <IconButton
+                          color="error"
+                          onClick={() => disabledCycling(row)}
+                        >
+                          <BlockIcon />
+                        </IconButton>
+                      )}
+                      {row.status === CYCLING_STATUS.DISABLED && (
+                        <IconButton
+                          color="success"
+                          onClick={() => enableCycling(row)}
+                        >
+                          <CheckCircleOutlineIcon />
+                        </IconButton>
+                      )}
                     </TableCell>
                   </TableRow>
                 ))}

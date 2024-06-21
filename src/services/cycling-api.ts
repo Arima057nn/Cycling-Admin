@@ -23,4 +23,7 @@ export const cyclingApi = {
       password,
     });
   },
+  disableCycling(cyclingId: string) {
+    return axiosClient.post("/cycling/disable", { cyclingId });
+  },
 };
