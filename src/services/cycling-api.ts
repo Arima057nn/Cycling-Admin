@@ -13,7 +13,8 @@ export const cyclingApi = {
     code: string,
     category: string,
     status: number,
-    password: string
+    password: string,
+    qrcode: string
   ) {
     return axiosClient.post("/cycling/create", {
       name,
@@ -21,6 +22,7 @@ export const cyclingApi = {
       category,
       status,
       password,
+      qrcode,
     });
   },
   disableCycling(cyclingId: string) {
