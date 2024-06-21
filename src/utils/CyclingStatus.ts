@@ -8,6 +8,8 @@ export function convertCyclingStatus(status: number): string {
       return "Hoạt động";
     case CYCLING_STATUS.KEEPING:
       return "Giữ xe";
+    case CYCLING_STATUS.MAINTENANCE:
+      return "Bảo dưỡng";
     default:
       return "Không xác định";
   }

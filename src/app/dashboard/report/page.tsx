@@ -19,10 +19,15 @@ import {
   Modal,
 } from "@mui/material";
 import VisibilityIcon from "@mui/icons-material/Visibility";
+import BuildIcon from "@mui/icons-material/Build";
 import SearchIcon from "@mui/icons-material/Search";
 import { ReportInterface } from "@/interfaces/report";
 import { reportApi } from "@/services/report-api";
 import { REPORT_STATUS } from "@/constants/report";
+import { convertCyclingStatus } from "@/utils/CyclingStatus";
+import { toast } from "react-toastify";
+import { CYCLING_STATUS } from "@/constants/cycling";
+import CheckIcon from "@mui/icons-material/Check";
 
 const style = {
   position: "absolute" as "absolute",
@@ -116,6 +121,25 @@ export default function Report() {
     setReportChecked(null);
   };
 
+  const startMaintenance = async (report: ReportInterface) => {
+    setReportChecked(report);
+    const res = await reportApi.startMaintenance(report.cyclingId._id);
+    if (res?.status === 200) {
+      toast.success(res.data.message);
+    } else {
+      toast.error(res.data.error);
+    }
+  };
+
+  const handleFinishMaintenance = async (report: ReportInterface) => {
+    setReportChecked(report);
+    const res = await reportApi.finishMaintenance(report.cyclingId._id);
+    if (res?.status === 200) {
+      toast.success(res.data.message);
+    } else {
+      toast.error(res.data.error);
+    }
+  };
   return (
     <div className="p-4">
       <Card sx={{ p: 2 }}>
@@ -142,6 +166,7 @@ export default function Report() {
                 <TableCell>Xe đạp</TableCell>
                 <TableCell>Chi tiết</TableCell>
                 <TableCell>Trạng thái</TableCell>
+                <TableCell>Trạng thái xe</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -179,6 +204,36 @@ export default function Report() {
                       ))}
                     </Select>
                   </TableCell>
+                  {row.status === REPORT_STATUS[2].value ? (
+                    <TableCell></TableCell>
+                  ) : (
+                    <TableCell>
+                      {row.cyclingId &&
+                        convertCyclingStatus(row.cyclingId.status)}
+                      {row.cyclingId &&
+                        row.cyclingId.status !== CYCLING_STATUS.MAINTENANCE && (
+                          <IconButton
+                            onClick={() => {
+                              startMaintenance(row);
+                            }}
+                            color="error"
+                          >
+                            <BuildIcon />
+                          </IconButton>
+                        )}
+                      {row.cyclingId &&
+                        row.cyclingId.status === CYCLING_STATUS.MAINTENANCE && (
+                          <IconButton
+                            onClick={() => {
+                              handleFinishMaintenance(row);
+                            }}
+                            color="success"
+                          >
+                            <CheckIcon />
+                          </IconButton>
+                        )}
+                    </TableCell>
+                  )}
                 </TableRow>
               ))}
             </TableBody>
