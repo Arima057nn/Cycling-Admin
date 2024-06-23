@@ -16,10 +16,12 @@
     "@mui/styled-engine-sc": "^6.0.0-alpha.18",
     "@react-google-maps/api": "^2.19.3",
     "axios": "^1.7.2",
+    "chart.js": "^4.4.3",
     "dayjs": "^1.11.11",
     "firebase": "^10.12.2",
     "next": "14.2.3",
     "react": "^18",
+    "react-chartjs-2": "^5.2.0",
     "react-dom": "^18",
     "react-toastify": "^10.0.5",
     "styled-components": "^6.1.11"
