@@ -189,6 +189,7 @@ export default function Report() {
                   </TableCell>
                   <TableCell>
                     <Select
+                      size="small"
                       value={row.status}
                       onChange={(event) =>
                         handleStatusChange(
