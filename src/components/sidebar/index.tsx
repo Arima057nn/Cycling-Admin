@@ -42,7 +42,7 @@ const Sidebar = () => {
             <Link href="/dashboard">
               <div className="p-2 bg-indigo-500 flex rounded-lg flex-row items-center">
                 <BarChartIcon />
-                <span className="ml-2 font-normal text-sm">Overview</span>
+                <span className="ml-2 font-normal text-sm">Thống kê</span>
               </div>
             </Link>
           </div>
@@ -50,7 +50,7 @@ const Sidebar = () => {
             <Link href="/dashboard/account">
               <div className="p-2 bg-indigo-500 flex rounded-lg flex-row items-center">
                 <PeopleAltIcon />
-                <span className="ml-2 font-normal text-sm">Account</span>
+                <span className="ml-2 font-normal text-sm">Tài khoản</span>
               </div>
             </Link>
           </div>
@@ -58,7 +58,7 @@ const Sidebar = () => {
             <Link href="/dashboard/station">
               <div className="p-2 bg-indigo-500 flex rounded-lg flex-row items-center">
                 <LocalGasStationIcon />
-                <span className="ml-2 font-normal text-sm">Station</span>
+                <span className="ml-2 font-normal text-sm">Trạm xe</span>
               </div>
             </Link>
           </div>
@@ -66,7 +66,7 @@ const Sidebar = () => {
             <Link href="/dashboard/cycling">
               <div className="p-2 bg-indigo-500 flex rounded-lg flex-row items-center">
                 <DirectionsBikeIcon />
-                <span className="ml-2 font-normal text-sm">Cycling</span>
+                <span className="ml-2 font-normal text-sm">Xe</span>
               </div>
             </Link>
           </div>
@@ -74,7 +74,7 @@ const Sidebar = () => {
             <Link href="/dashboard/ticket">
               <div className="p-2 bg-indigo-500 flex rounded-lg flex-row items-center">
                 <ConfirmationNumberIcon />
-                <span className="ml-2 font-normal text-sm">Ticket</span>
+                <span className="ml-2 font-normal text-sm">Vé xe</span>
               </div>
             </Link>
           </div>
@@ -82,7 +82,7 @@ const Sidebar = () => {
             <Link href="/dashboard/report">
               <div className="p-2 bg-indigo-500 flex rounded-lg flex-row items-center">
                 <ReportIcon />
-                <span className="ml-2 font-normal text-sm">Report</span>
+                <span className="ml-2 font-normal text-sm">Báo cáo</span>
               </div>
             </Link>
           </div>
@@ -93,7 +93,7 @@ const Sidebar = () => {
             className="p-2 bg-[#FABF0C] flex rounded-lg flex-row items-center justify-center cursor-pointer"
           >
             <LogoutIcon />
-            <span className="ml-2 font-normal text-sm">Logout</span>
+            <span className="ml-2 font-normal text-sm">Đăng xuất</span>
           </div>
         </div>
       </div>
