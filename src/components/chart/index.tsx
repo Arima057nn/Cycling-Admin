@@ -24,16 +24,21 @@ ChartJS.register(
   Legend
 );
 
-const Chart = ({ data }: { data: statisticalInterface[] }) => {
+const Chart = ({
+  data,
+  color,
+}: {
+  data: statisticalInterface[];
+  color: string;
+}) => {
   const chartData = {
-    labels: data.map((entry) => entry.date),
+    labels: data.map((entry) => entry.data),
     datasets: [
       {
         label: "Dataset",
         data: data.map((entry) => entry.count),
         fill: false,
-        borderColor: "rgb(75, 192, 192)",
-        tension: 0.1,
+        borderColor: color,
       },
     ],
   };
@@ -45,22 +50,26 @@ const Chart = ({ data }: { data: statisticalInterface[] }) => {
         position: "top" as const,
       },
       title: {
-        display: true,
+        display: false,
         text: "Thống kê số lượng đặt xe",
       },
     },
-    cales: {
+    scales: {
       y: {
-        min: 0, // minimum value on the y-axis
-        max: 10, // maximum value on the y-axis
+        type: "linear", // Specify the type of the y-axis
+        min: 0, // Minimum value on the y-axis to prevent negative values
         ticks: {
-          stepSize: 1, // step size between values on the y-axis
+          stepSize: 1, // Step size between values on the y-axis to ensure integers
+          callback: function (value: number) {
+            // Ensure the y-axis ticks are integers and not negative
+            return value >= 0 && Number.isInteger(value) ? value : "";
+          },
         },
       },
     },
   };
 
-  return <Line data={chartData} options={options} />;
+  return <Line data={chartData} options={options as any} />; // Use 'as any' to bypass type checking
 };
 
 export default Chart;
