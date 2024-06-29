@@ -27,15 +27,17 @@ ChartJS.register(
 const Chart = ({
   data,
   color,
+  label,
 }: {
   data: statisticalInterface[];
   color: string;
+  label: string;
 }) => {
   const chartData = {
     labels: data.map((entry) => entry.data),
     datasets: [
       {
-        label: "Dataset",
+        label: label,
         data: data.map((entry) => entry.count),
         fill: false,
         borderColor: color,
@@ -47,7 +49,8 @@ const Chart = ({
     responsive: true,
     plugins: {
       legend: {
-        position: "top" as const,
+        // position: "top" as const,
+        display: false,
       },
       title: {
         display: false,
@@ -61,7 +64,6 @@ const Chart = ({
         ticks: {
           stepSize: 1, // Step size between values on the y-axis to ensure integers
           callback: function (value: number) {
-            // Ensure the y-axis ticks are integers and not negative
             return value >= 0 && Number.isInteger(value) ? value : "";
           },
         },
