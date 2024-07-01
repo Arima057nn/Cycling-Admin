@@ -72,15 +72,14 @@ export default function CreateStation() {
           setLongitude("");
           setPosition("");
           setImage(null);
-          toast.success("Create station successfully");
+          toast.success("Tạo trạm xe mới thành công");
         } else {
-          toast.error("Create station failed");
+          toast.error("Tạo trạm xe mới thất bại");
         }
       } else {
-        toast.error("Please select an image to upload.");
+        toast.error("Vui lòng chọn ảnh trạm xe");
       }
     } catch (error) {
-      console.error("Error creating station:", error);
       toast.error("An error occurred while creating the station.");
     }
   };
@@ -89,7 +88,7 @@ export default function CreateStation() {
     <div className="p-4">
       <Card sx={{ p: 2 }}>
         <Typography variant="h4" gutterBottom>
-          Create New Station
+          Tạo trạm xe mới
         </Typography>
         <Box>
           <Box sx={{ display: "flex", gap: 2 }}>
@@ -156,7 +155,7 @@ export default function CreateStation() {
             sx={{ mt: 2 }}
             onClick={createStation}
           >
-            Create
+            Tạo
           </Button>
         </Box>
       </Card>

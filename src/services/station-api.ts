@@ -4,6 +4,24 @@ export const stationApi = {
   getAllStation() {
     return axiosClient.get("/station");
   },
+  getStation(stationId: string) {
+    return axiosClient.get(`/station/id?stationId=${stationId}`);
+  },
+  updateStation(
+    stationId: string,
+    name: string,
+    position: string,
+    latitude: string,
+    longitude: string
+  ) {
+    return axiosClient.post("/station/update", {
+      stationId,
+      name,
+      position,
+      latitude,
+      longitude,
+    });
+  },
   createStation(
     name: string,
     code: string,

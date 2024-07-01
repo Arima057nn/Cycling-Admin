@@ -252,11 +252,13 @@ export default function Station() {
                       {row.latitude}, {row.longitude}
                     </TableCell>
                     <TableCell>
-                      <IconButton color="primary">
+                      <IconButton
+                        color="primary"
+                        onClick={() => {
+                          router.push(`/dashboard/station/${row._id}`);
+                        }}
+                      >
                         <SettingsIcon />
-                      </IconButton>
-                      <IconButton color="error">
-                        <DeleteIcon />
                       </IconButton>
                       <IconButton
                         color="success"
