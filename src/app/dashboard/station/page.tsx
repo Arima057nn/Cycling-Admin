@@ -24,16 +24,18 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/navigation";
 import PlaceIcon from "@mui/icons-material/Place";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { CyclingInterface } from "@/interfaces/cycling";
 import { convertCyclingStatus } from "@/utils/CyclingStatus";
 import { toast } from "react-toastify";
+import CyclingStation from "@/components/cyclingStation/page";
 
 const style = {
   position: "absolute" as "absolute",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  height: 600,
+  height: 640,
   bgcolor: "background.paper",
   borderRadius: 2,
   overflow: "auto",
@@ -50,6 +52,7 @@ export default function Station() {
   const [totalPages, setTotalPages] = useState(1);
   const [searchAddress, setSearchAddress] = useState("");
   const [open, setOpen] = useState(false);
+  const [openInfo, setOpenInfo] = useState(false);
   const [stationChecked, setStationChecked] = useState<StationInterface | null>(
     null
   );
@@ -108,17 +111,24 @@ export default function Station() {
     router.push(`/dashboard/station/map/`);
   };
 
-  const handleShowInfoStation = (station: StationInterface) => {
+  const handleShowAddCycling = (station: StationInterface) => {
     setStationChecked(station);
     setOpen(true);
-    console.log(station);
   };
 
+  const handleShowInfoStation = (station: StationInterface) => {
+    setStationChecked(station);
+    setOpenInfo(true);
+  };
   const handleCloseModal = () => {
     setOpen(false);
     setStationChecked(null);
   };
 
+  const handleCloseModalInfo = () => {
+    setOpenInfo(false);
+    setStationChecked(null);
+  };
   const getCyclingsReady = async () => {
     const res = await stationApi.getCyclingsReady();
     if (res.status === 200) {
@@ -250,9 +260,12 @@ export default function Station() {
                       </IconButton>
                       <IconButton
                         color="success"
-                        onClick={() => handleShowInfoStation(row)}
+                        onClick={() => handleShowAddCycling(row)}
                       >
                         <AddIcon />
+                      </IconButton>
+                      <IconButton onClick={() => handleShowInfoStation(row)}>
+                        <VisibilityIcon />
                       </IconButton>
                     </TableCell>
                   </TableRow>
@@ -306,42 +319,48 @@ export default function Station() {
                       <PlaceIcon /> {stationChecked?.position}
                     </div>
                   </div>
-                  {cyclings.map((row) => (
-                    <TableRow hover key={row._id}>
-                      <TableCell
-                        sx={{
-                          display: "flex",
-                          flexDirection: "row",
-                          alignItems: "center",
-                          gap: 2,
-                        }}
-                      >
-                        <Box
-                          component="img"
-                          alt="Widgets"
-                          src="/assets/cycling.png"
+                  <div className="h-4/5 overflow-auto">
+                    {cyclings.map((row) => (
+                      <TableRow hover key={row._id}>
+                        <TableCell
                           sx={{
-                            height: 64,
-                            width: 64,
-                            borderRadius: 2,
+                            display: "flex",
+                            flexDirection: "row",
+                            alignItems: "center",
+                            gap: 2,
                           }}
-                        />
-                        <Typography variant="subtitle2">{row.name}</Typography>
-                      </TableCell>
-                      <TableCell>{row.code}</TableCell>
-                      <TableCell>{convertCyclingStatus(row.status)}</TableCell>
-                      <TableCell>
-                        <Checkbox
-                          checked={selectedCyclings.some(
-                            (cycling) => cycling.cyclingId === row._id
-                          )}
-                          onChange={() => handleCheckboxChange(row._id)}
-                        />
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                        >
+                          <Box
+                            component="img"
+                            alt="Widgets"
+                            src="/assets/cycling.png"
+                            sx={{
+                              height: 64,
+                              width: 64,
+                              borderRadius: 2,
+                            }}
+                          />
+                          <Typography variant="subtitle2">
+                            {row.name}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>{row.code}</TableCell>
+                        <TableCell>
+                          {convertCyclingStatus(row.status)}
+                        </TableCell>
+                        <TableCell>
+                          <Checkbox
+                            checked={selectedCyclings.some(
+                              (cycling) => cycling.cyclingId === row._id
+                            )}
+                            onChange={() => handleCheckboxChange(row._id)}
+                          />
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </div>
 
-                  <div className="absolute bottom-6 right-8">
+                  <div className="w-full flex justify-end my-4">
                     <Button
                       variant="contained"
                       onClick={createCyclingToStation}
@@ -350,6 +369,16 @@ export default function Station() {
                     </Button>
                   </div>
                 </div>
+              </Box>
+            </Modal>
+            <Modal
+              open={openInfo}
+              onClose={handleCloseModalInfo}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style}>
+                <CyclingStation station={stationChecked} />
               </Box>
             </Modal>
           </Box>
