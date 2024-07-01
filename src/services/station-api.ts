@@ -30,4 +30,7 @@ export const stationApi = {
   createCyclingToStation(stationId: string, cyclings: { cyclingId: string }[]) {
     return axiosClient.post("/station/createCyclings", { stationId, cyclings });
   },
+  deleteCyclingFromStation(stationId: string, cyclingId: string) {
+    return axiosClient.post(`/station/deleteCycling`, { stationId, cyclingId });
+  },
 };
