@@ -228,7 +228,12 @@ export default function Station() {
                       >
                         <MyLocationIcon />
                       </IconButton>
-                      <IconButton color="primary">
+                      <IconButton
+                        color="primary"
+                        onClick={() => {
+                          router.push(`/dashboard/cycling/${row.code}`);
+                        }}
+                      >
                         <SettingsIcon />
                       </IconButton>
                       {row.status === CYCLING_STATUS.READY && (

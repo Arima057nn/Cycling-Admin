@@ -5,6 +5,7 @@ import { Box, Button, Card, TextField, Typography } from "@mui/material";
 import { cyclingApi } from "@/services/cycling-api";
 import { CyclingInterface } from "@/interfaces/cycling";
 import { toast } from "react-toastify";
+import { convertCyclingStatus } from "@/utils/CyclingStatus";
 
 export default function Cycling({ params }: { params: { id: string } }) {
   const [cycling, setCycling] = useState<CyclingInterface>();
@@ -37,15 +38,66 @@ export default function Cycling({ params }: { params: { id: string } }) {
         </Typography>
         <Box>
           <Box sx={{ display: "flex", gap: 2 }}>
-            <TextField
-              fullWidth
-              margin="normal"
-              value={cycling?.name}
-              onChange={(e) =>
-                cycling && setCycling({ ...cycling, name: e.target.value })
-              }
-            />
-            <TextField fullWidth margin="normal" value={cycling?.code} />
+            <div className="flex-1">
+              <div className="text-sm font-semibold">Tên xe</div>
+              <TextField
+                fullWidth
+                margin="normal"
+                value={cycling?.name}
+                onChange={(e) =>
+                  cycling && setCycling({ ...cycling, name: e.target.value })
+                }
+              />
+            </div>
+            <div className="flex-1">
+              <div className="text-sm font-semibold">Mã xe</div>
+              <TextField
+                disabled
+                fullWidth
+                margin="normal"
+                value={cycling?.code}
+              />
+            </div>
+          </Box>
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <div className="flex-1">
+              <div className="text-sm font-semibold">Kinh độ</div>
+              <TextField
+                disabled
+                fullWidth
+                margin="normal"
+                value={cycling?.latitude}
+              />
+            </div>
+            <div className="flex-1">
+              <div className="text-sm font-semibold">Vĩ độ</div>
+              <TextField
+                disabled
+                fullWidth
+                margin="normal"
+                value={cycling?.longitude}
+              />
+            </div>
+          </Box>
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <div className="flex-1">
+              <div className="text-sm font-semibold">Trạng thái</div>
+              <TextField
+                fullWidth
+                disabled
+                margin="normal"
+                value={cycling && convertCyclingStatus(cycling?.status)}
+              />
+            </div>
+            <div className="flex-1">
+              <div className="text-sm font-semibold">Thể loại xe</div>
+              <TextField
+                fullWidth
+                disabled
+                margin="normal"
+                value={cycling?.category.name}
+              />
+            </div>
           </Box>
 
           <Button
