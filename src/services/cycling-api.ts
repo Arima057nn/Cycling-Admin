@@ -1,4 +1,3 @@
-import { create } from "domain";
 import { axiosClient } from "./axios-cilent";
 
 export const cyclingApi = {
@@ -27,5 +26,11 @@ export const cyclingApi = {
   },
   disableCycling(cyclingId: string) {
     return axiosClient.post("/cycling/disable", { cyclingId });
+  },
+  getCycling(code: string) {
+    return axiosClient.get(`/cycling/get?code=${code}`);
+  },
+  updateCycling(code: string, name: string) {
+    return axiosClient.post("/cycling/updateC", { code, name });
   },
 };

@@ -59,7 +59,12 @@ export default function Station({ params }: { params: { id: string } }) {
             </div>
             <div className="flex-1">
               <div className="text-sm font-semibold">Mã trạm</div>
-              <TextField fullWidth margin="normal" value={station?.code} />
+              <TextField
+                disabled
+                fullWidth
+                margin="normal"
+                value={station?.code}
+              />
             </div>
           </Box>
           <Box sx={{ display: "flex", flexDirection: "column" }}>
