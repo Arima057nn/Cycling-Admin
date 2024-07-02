@@ -18,8 +18,8 @@ import {
   Typography,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import SettingsIcon from "@mui/icons-material/Settings";
-import DeleteIcon from "@mui/icons-material/Delete";
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import { useRouter } from "next/navigation";
 
 export default function Ticket() {
   const [tickets, setTickets] = useState<TicketInterface[]>([]);
@@ -28,6 +28,7 @@ export default function Ticket() {
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [totalPages, setTotalPages] = useState(1);
   const [searchName, setSearchName] = useState("");
+  const router = useRouter();
 
   const getTickets = async () => {
     const response = await ticketApi.getAllTicket();
@@ -116,11 +117,13 @@ export default function Ticket() {
                   <TableCell>{row.timer} phút</TableCell>
                   <TableCell>{row.expiration} giờ</TableCell>
                   <TableCell>
-                    <IconButton color="primary">
-                      <SettingsIcon />
-                    </IconButton>
-                    <IconButton color="error">
-                      <DeleteIcon />
+                    <IconButton
+                      color="primary"
+                      onClick={() => {
+                        router.push(`/dashboard/ticket/${row._id}`);
+                      }}
+                    >
+                      <VisibilityIcon />
                     </IconButton>
                   </TableCell>
                 </TableRow>
