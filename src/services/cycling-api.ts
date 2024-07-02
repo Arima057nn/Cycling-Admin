@@ -33,4 +33,7 @@ export const cyclingApi = {
   updateCycling(code: string, name: string) {
     return axiosClient.post("/cycling/updateC", { code, name });
   },
+  updateQrCode(cyclingId: string, qrcode: string) {
+    return axiosClient.post("/cycling/updateQr", { cyclingId, qrcode });
+  },
 };
