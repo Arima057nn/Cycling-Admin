@@ -22,6 +22,9 @@ export const stationApi = {
       longitude,
     });
   },
+  upadteImageStation(image: string, stationId: string) {
+    return axiosClient.post("/station/updateImage", { image, stationId });
+  },
   createStation(
     name: string,
     code: string,
