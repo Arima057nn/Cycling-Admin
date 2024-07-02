@@ -23,7 +23,7 @@ import { convertCyclingStatus } from "@/utils/CyclingStatus";
 import MyLocationIcon from "@mui/icons-material/MyLocation";
 import BlockIcon from "@mui/icons-material/Block";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import SettingsIcon from "@mui/icons-material/Settings";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import QrCodeScannerIcon from "@mui/icons-material/QrCodeScanner";
 import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/navigation";
@@ -222,10 +222,7 @@ export default function Station() {
                       </IconButton>
                     </TableCell>
                     <TableCell>
-                      <IconButton
-                        onClick={() => handleOpenModal(row)}
-                        color="primary"
-                      >
+                      <IconButton onClick={() => handleOpenModal(row)}>
                         <MyLocationIcon />
                       </IconButton>
                       <IconButton
@@ -234,7 +231,7 @@ export default function Station() {
                           router.push(`/dashboard/cycling/${row.code}`);
                         }}
                       >
-                        <SettingsIcon />
+                        <VisibilityIcon />
                       </IconButton>
                       {row.status === CYCLING_STATUS.READY && (
                         <IconButton
