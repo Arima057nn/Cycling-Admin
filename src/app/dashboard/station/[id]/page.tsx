@@ -17,7 +17,7 @@ export default function Station({ params }: { params: { id: string } }) {
 
   const getStation = async () => {
     const res = await stationApi.getStation(params.id);
-    if (res.status === 200) {
+    if (res?.status === 200) {
       setStation(res.data);
       setLatitude(res.data.latitude.toString());
       setLongitude(res.data.longitude.toString());
@@ -67,7 +67,7 @@ export default function Station({ params }: { params: { id: string } }) {
     const downloadURL = await uploadImageAndGetUrl(image);
 
     const res = await stationApi.upadteImageStation(downloadURL, station._id);
-    if (res.status === 200) {
+    if (res?.status === 200) {
       console.log("res", res.data?.imgae);
       setStation({ ...station, imgae: res.data?.imgae });
       setImage(null);
@@ -86,7 +86,7 @@ export default function Station({ params }: { params: { id: string } }) {
       latitude,
       longitude
     );
-    if (res.status === 200) {
+    if (res?.status === 200) {
       toast.success("Cập nhật trạm xe thành công");
     } else {
       toast.error("Cập nhật trạm xe thất bại");

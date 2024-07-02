@@ -121,7 +121,7 @@ export default function Station() {
   const disabledCycling = async (cycling: CyclingInterface) => {
     setCyclingChecked(cycling);
     const res = await cyclingApi.disableCycling(cycling._id);
-    if (res.status === 200) {
+    if (res?.status === 200) {
       toast.success(res.data.message);
       getCyclings();
     } else {
@@ -132,7 +132,7 @@ export default function Station() {
   const enableCycling = async (cycling: CyclingInterface) => {
     setCyclingChecked(cycling);
     const res = await reportApi.finishMaintenance(cycling._id);
-    if (res.status === 200) {
+    if (res?.status === 200) {
       toast.success("Kích hoạt xe thành công");
       getCyclings();
     } else {

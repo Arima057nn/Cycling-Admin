@@ -54,7 +54,7 @@ export default function Cycling({ params }: { params: { id: string } }) {
     const downloadURL = await uploadImageAndGetUrl(image);
 
     const res = await cyclingApi.updateQrCode(cycling._id, downloadURL);
-    if (res.status === 200) {
+    if (res?.status === 200) {
       setCycling({ ...cycling, qrcode: res.data?.qrcode });
       setImage(null);
       setUploadProgress(0);
@@ -77,7 +77,7 @@ export default function Cycling({ params }: { params: { id: string } }) {
 
   const getCycling = async () => {
     const res = await cyclingApi.getCycling(params.id);
-    if (res.status === 200) {
+    if (res?.status === 200) {
       setCycling(res.data);
     }
   };

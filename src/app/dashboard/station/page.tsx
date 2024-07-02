@@ -131,7 +131,7 @@ export default function Station() {
   };
   const getCyclingsReady = async () => {
     const res = await stationApi.getCyclingsReady();
-    if (res.status === 200) {
+    if (res?.status === 200) {
       setCyclings(res.data.cyclingsNotAtStation);
     }
   };
@@ -145,7 +145,7 @@ export default function Station() {
       stationChecked?._id,
       selectedCyclings
     );
-    if (res.status === 200) {
+    if (res?.status === 200) {
       getCyclingsReady();
       toast.success("Thêm xe thành công");
     } else toast.error("Thêm xe thất bại");
