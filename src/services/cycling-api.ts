@@ -36,4 +36,7 @@ export const cyclingApi = {
   updateQrCode(cyclingId: string, qrcode: string) {
     return axiosClient.post("/cycling/updateQr", { cyclingId, qrcode });
   },
+  updateCoordinateCyclings() {
+    return axiosClient.post("/cycling/updateCoordinate");
+  },
 };

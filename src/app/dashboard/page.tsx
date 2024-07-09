@@ -157,32 +157,29 @@ export default function Dashboard() {
         </Select>
       </div>
       <div className="flex w-full justify-center gap-4">
-        <div className="p-4 bg-[#4B70F5] rounded-lg font-semibold flex text-gray-100 w-1/4 h-24 justify-between">
+        <div className="p-4 bg-[#4B70F5] rounded-lg font-semibold flex text-xl text-gray-100 w-1/3 h-24 justify-between">
           <div>Doanh thu</div>
           <div>{SumStatistical(dataRevenue)} VNĐ</div>
         </div>
-        <div className="p-4 bg-[#36BA98] rounded-lg font-semibold flex text-gray-100 w-1/4 h-24 justify-between">
+        <div className="p-4 bg-[#36BA98] rounded-lg font-semibold flex text-xl text-gray-100 w-1/3 h-24 justify-between">
           <div>Đặt xe</div>
-          <div>{SumStatistical(dataBooking)}</div>
+          <div>{SumStatistical(dataBooking)} chuyến</div>
         </div>
-        <div className="p-4 bg-[#F4A261] rounded-lg font-semibold flex text-gray-100 w-1/4 h-24 justify-between">
-          <div>Vé</div>
-          <div>1000</div>
-        </div>
-        <div className="p-4 bg-[#EE4E4E] rounded-lg font-semibold flex text-gray-100 w-1/4 h-24 justify-between">
-          <div>Người dùng</div>
-          <div>{newUser}</div>
+
+        <div className="p-4 bg-[#EE4E4E] rounded-lg font-semibold flex text-xl text-gray-100 w-1/3 h-24 justify-between">
+          <div>Người dùng mới</div>
+          <div>{newUser} người</div>
         </div>
       </div>
       <div className="flex w-full justify-center gap-2">
-        <div className="w-1/2 h-[360px] p-4 bg-white rounded-lg flex flex-col items-center justify-start">
-          <Chart data={dataBooking} color="#F4A261" label="Chuyến đi" />
+        <div className="w-1/2 h-[440px] p-4 bg-white rounded-lg flex flex-col items-center justify-start">
+          <Chart data={dataBooking} color="#F4A261" label=" yến đi" />
           <div className="text-gray-700 font-semibold text-xs pt-2">
             Thống kê số chuyến đi
           </div>
         </div>
 
-        <div className="w-1/2 h-[360px] p-4 bg-white rounded-lg flex flex-col items-center justify-start">
+        <div className="w-1/2 h-[440px] p-4 bg-white rounded-lg flex flex-col items-center justify-start">
           <Chart data={dataRevenue} color="#36BA98" label="Doanh thu" />
           <div className="text-gray-700 font-semibold text-xs pt-2">
             Thống kê doanh thu (VNĐ)

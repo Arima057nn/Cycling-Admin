@@ -20,7 +20,7 @@ import {
 import { useEffect, useState } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import SettingsIcon from "@mui/icons-material/Settings";
-import DeleteIcon from "@mui/icons-material/Delete";
+import RefreshIcon from "@mui/icons-material/Refresh";
 import AddIcon from "@mui/icons-material/Add";
 import { useRouter } from "next/navigation";
 import PlaceIcon from "@mui/icons-material/Place";
@@ -29,6 +29,7 @@ import { CyclingInterface } from "@/interfaces/cycling";
 import { convertCyclingStatus } from "@/utils/CyclingStatus";
 import { toast } from "react-toastify";
 import CyclingStation from "@/components/cyclingStation/page";
+import { cyclingApi } from "@/services/cycling-api";
 
 const style = {
   position: "absolute" as "absolute",
@@ -166,6 +167,15 @@ export default function Station() {
       }
     });
   };
+
+  const updateCoordinateCyclings = async () => {
+    const res = await cyclingApi.updateCoordinateCyclings();
+    if (res?.status === 200) {
+      toast.success("Cập nhật tọa độ thành công");
+    } else {
+      toast.error("Cập nhật tọa độ thất bại");
+    }
+  };
   return (
     <div>
       <div className="p-4">
@@ -191,11 +201,14 @@ export default function Station() {
             onChange={handleSearchInputChange}
           />
           <div>
+            <IconButton onClick={() => updateCoordinateCyclings()}>
+              <RefreshIcon />
+            </IconButton>
             <Button
               variant="contained"
               color="success"
               endIcon={<PlaceIcon />}
-              sx={{ marginRight: 2 }}
+              sx={{ marginRight: 2, marginX: 2 }}
               onClick={() => handleCheckPosition()}
             >
               Map
