@@ -148,6 +148,7 @@ export default function Station() {
     );
     if (res?.status === 200) {
       getCyclingsReady();
+      setSelectedCyclings([]);
       toast.success("Thêm xe thành công");
     } else toast.error("Thêm xe thất bại");
   };
